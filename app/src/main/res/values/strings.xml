@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Pokedex</string>
+    <string name="pokemon_list_screen">pokemon_list_screen</string>
 </resources>
