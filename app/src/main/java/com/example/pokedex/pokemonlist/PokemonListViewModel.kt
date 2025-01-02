@@ -4,10 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.traceEventStart
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.window.isPopupLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
@@ -97,6 +94,8 @@ class PokemonListViewModel @Inject constructor(
                     loadError.value = result.message!!
                     isLoading.value = false
                 }
+
+                is Resource.Loading -> TODO()
             }
         }
     }
@@ -112,3 +111,4 @@ class PokemonListViewModel @Inject constructor(
         }
     }
 }
+
