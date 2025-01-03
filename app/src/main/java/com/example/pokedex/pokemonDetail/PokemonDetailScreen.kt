@@ -50,7 +50,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -68,12 +67,13 @@ import com.example.pokedex.utils.parseTypeToColor
 import java.util.Locale
 import kotlin.math.round
 
+
 @Composable
 fun PokemonDetailScreen(
     dominantColor: Color,
     pokemonName: String,
     navController: NavController,
-    topPadding: Dp = 30.dp,
+    topPadding: Dp = 20.dp,
     pokemonImageSize: Dp = 200.dp,
     viewModel: PokemonDetailViewModel = hiltViewModel()
 ) {
@@ -83,8 +83,8 @@ fun PokemonDetailScreen(
     Box(modifier = Modifier
         .fillMaxSize()
         .background(dominantColor)
-        .padding(bottom = 16.dp)){
-
+        .padding(bottom = 16.dp)
+    ) {
         PokemonDetailTopSection(
             navController = navController,
             modifier = Modifier
@@ -117,27 +117,28 @@ fun PokemonDetailScreen(
                     bottom = 16.dp
                 )
         )
-        Box (
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.TopCenter
-        ){
-            if(pokemonInfo is Resource.Success){
-                pokemonInfo.data?.sprites.let {
+        Box(contentAlignment = Alignment.TopCenter,
+            modifier = Modifier
+                .fillMaxSize()) {
+            if(pokemonInfo is Resource.Success) {
+                pokemonInfo.data?.sprites?.let {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(it?.frontDefault)
+                            .data(it.frontDefault)
                             .crossfade(true)
                             .build(),
-                        contentDescription = pokemonInfo.data?.name,
+                        contentDescription = pokemonInfo.data.name,
                         modifier = Modifier
                             .size(pokemonImageSize)
-                            .offset(y = topPadding)
+                            .offset(y = 70.dp)
                     )
                 }
             }
         }
     }
 }
+
+
 
 
 @Composable
@@ -216,7 +217,7 @@ fun PokemonDetailSection(
                 .wrapContentHeight()
                 .widthIn(max = 500.dp)
                 .padding(16.dp)
-                .offset(y=(-200).dp),
+                .offset(y = (-20).dp),
             shape = RoundedCornerShape(16.dp),
             elevation = CardDefaults.cardElevation(8.dp)
         ) {
@@ -240,6 +241,7 @@ fun PokemonDetailSection(
                     pokemonWeight = pokemonInfo.weight,
                     pokemonHeight = pokemonInfo.height
                 )
+                PokemonBaseStats(pokemonInfo = pokemonInfo)
             }
         }
     }
