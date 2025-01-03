@@ -17,12 +17,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -46,6 +50,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -68,7 +73,7 @@ fun PokemonDetailScreen(
     dominantColor: Color,
     pokemonName: String,
     navController: NavController,
-    topPadding: Dp = 20.dp,
+    topPadding: Dp = 30.dp,
     pokemonImageSize: Dp = 200.dp,
     viewModel: PokemonDetailViewModel = hiltViewModel()
 ) {
@@ -127,7 +132,6 @@ fun PokemonDetailScreen(
                         modifier = Modifier
                             .size(pokemonImageSize)
                             .offset(y = topPadding)
-
                     )
                 }
             }
@@ -202,26 +206,42 @@ fun PokemonDetailSection(
     pokemonInfo: Pokemon
 ) {
     val scrollState = rememberScrollState()
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Box(
         modifier = Modifier
-            .fillMaxSize()
-            .offset(y = 100.dp)
-            .verticalScroll(scrollState)
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = "#${pokemonInfo.id} ${pokemonInfo.name.capitalize(java.util.Locale.ROOT)}",
-            fontWeight = FontWeight.Bold,
-            fontSize = 30.sp,
-            textAlign = TextAlign.Center,
-            color =  MaterialTheme.colorScheme.onSurface
-        )
-        PokemonTypeSection(types = pokemonInfo.types)
-        PokemonDetailDataSection(
-            pokemonWeight = pokemonInfo.weight,
-            pokemonHeight = pokemonInfo.height
-        )
-
+        Card(
+            modifier = Modifier
+                .wrapContentHeight()
+                .widthIn(max = 500.dp)
+                .padding(16.dp)
+                .offset(y=(-200).dp),
+            shape = RoundedCornerShape(16.dp),
+            elevation = CardDefaults.cardElevation(8.dp)
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .verticalScroll(scrollState)
+            ) {
+                Text(
+                    text = "#${pokemonInfo.id} ${pokemonInfo.name.replaceFirstChar {
+                        if (it.isLowerCase()) it.titlecase(java.util.Locale.ROOT) else it.toString()
+                    }}",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 30.sp,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                PokemonTypeSection(types = pokemonInfo.types)
+                PokemonDetailDataSection(
+                    pokemonWeight = pokemonInfo.weight,
+                    pokemonHeight = pokemonInfo.height
+                )
+            }
+        }
     }
 }
 
